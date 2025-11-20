@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>For Ana</title>
+    <!-- Importing Tailwind CSS for layout utility -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Importing a romantic/handwritten font -->
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* Custom Styles */
+        body {
+            font-family: 'Lato', sans-serif;
+            background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
+            min-height: 100vh;
+            /* Allow vertical scroll for tall content on mobile, hide horizontal */
+            overflow-x: hidden; 
+            overflow-y: auto;
+        }
+
+        .romantic-font {
+            font-family: 'Dancing Script', cursive;
+        }
+
+        /* The "Reverse Fade" (Fade In) Animation */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+                filter: blur(5px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+                filter: blur(0);
+            }
+        }
+
+        .animate-reveal {
+            opacity: 0;
+            animation: fadeInUp 2s ease-out forwards;
+        }
+
+        /* Helper to hide elements initially before animation triggers via JS */
+        .invisible-start {
+            opacity: 0;
+        }
+
+        /* Heartbeat Animation */
+        @keyframes heartbeat {
+            0% { transform: scale(1); }
+            15% { transform: scale(1.3); }
+            30% { transform: scale(1); }
+            45% { transform: scale(1.15); }
+            60% { transform: scale(1); }
+            100% { transform: scale(1); }
+        }
+
+        .heart-icon {
+            display: inline-block;
+            color: #e11d48;
+            animation: heartbeat 2s infinite;
+            animation-delay: 2.5s;
+        }
+        
+        .bg-gradient-romantic {
+            background: linear-gradient(to top, #fad0c4 0%, #ffd1ff 100%);
+        }
+
+        /* Smooth transition for section switching */
+        .section-transition {
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        /* Celebration Canvas */
+        #celebration-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 50;
+            background: black;
+            pointer-events: none; /* Let clicks pass through if needed, mostly for overlay */
+            opacity: 0;
+            transition: opacity 2s ease-in-out;
+        }
+        
+        /* Class to show canvas */
+        .show-canvas {
+            opacity: 1 !important;
+            pointer-events: auto !important;
+        }
+    </style>
+</head>
+<body class="bg-gradient-romantic flex flex-col items-center justify-center text-center p-4">
+
+    <!-- CANVAS FOR FIREWORKS -->
+    <canvas id="celebration-canvas"></canvas>
+
+    <!-- SECTION 1: Greeting -->
+    <div id="greeting-section" class="section-transition w-full max-w-[90%] md:max-w-3xl absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10">
+        <h1 class="animate-reveal text-5xl md:text-8xl text-gray-800 romantic-font drop-shadow-md mb-8 leading-tight">
+            Bună Ana <span class="heart-icon">❤️</span>
+        </h1>
+
+        <div id="greeting-next" class="opacity-0 transition-opacity duration-1000 delay-[3000ms]">
+            <p class="text-lg text-gray-700 mb-6">Am o surpriză pentru tine...</p>
+            <button onclick="goToLocation()" class="bg-white text-pink-500 font-bold py-3 px-8 rounded-full shadow-lg hover:bg-pink-50 transition transform hover:scale-105 focus:outline-none ring-2 ring-pink-300 active:scale-95">
+                Apasă aici
+            </button>
+        </div>
+    </div>
+
+    <!-- SECTION 2: Location Reveal -->
+    <div id="location-section" class="hidden w-full max-w-[95%] md:max-w-4xl mt-4 mb-10 z-10 pb-10">
+        <h2 id="trip-text" class="invisible-start text-3xl md:text-5xl text-gray-800 romantic-font mb-8 md:mb-12 leading-tight">
+            De ziua ta, plecăm într-o excursie...
+        </h2>
+
+        <div id="where-text" class="invisible-start mb-8">
+            <h3 class="text-4xl md:text-6xl text-pink-600 font-bold romantic-font">Unde?</h3>
+        </div>
+
+        <div id="location-details" class="invisible-start bg-white/60 backdrop-blur-sm rounded-xl p-4 md:p-8 shadow-xl mx-auto transform transition-all duration-1000">
+            
+            <!-- EDIT HERE: Location Name -->
+            <h1 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">Paris, Franța</h1> 
+            
+            <!-- EDIT HERE: Description -->
+            <p class="text-gray-700 text-base md:text-lg mb-6 leading-relaxed">
+                Fă-ți bagajele! Vom explora orașul luminilor, vom mânca croissante sub Turnul Eiffel și vom avea cel mai romantic weekend.
+            </p>
+
+            <!-- EDIT HERE: Image Placeholders -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+                <div class="h-48 bg-gray-300 rounded-lg flex items-center justify-center overflow-hidden relative shadow-md group">
+                    <span class="text-gray-500 font-medium z-10">Introdu Imaginea 1 Aici</span>
+                    <!-- <img src="YOUR_URL" class="absolute inset-0 w-full h-full object-cover opacity-80" alt="Location"> -->
+                </div>
+                <div class="h-48 bg-gray-300 rounded-lg flex items-center justify-center overflow-hidden relative shadow-md group">
+                    <span class="text-gray-500 font-medium z-10">Introdu Imaginea 2 Aici</span>
+                    <!-- <img src="YOUR_URL" class="absolute inset-0 w-full h-full object-cover opacity-80" alt="Location"> -->
+                </div>
+            </div>
+
+            <button onclick="goToDate()" class="bg-pink-500 text-white font-bold py-3 px-8 rounded-full shadow-lg hover:bg-pink-600 transition transform hover:scale-105 focus:outline-none ring-2 ring-pink-300 active:scale-95">
+                Vezi data
+            </button>
+        </div>
+    </div>
+
+    <!-- SECTION 3: Date Reveal -->
+    <div id="date-section" class="hidden w-full max-w-[95%] md:max-w-3xl mt-10 z-10 pb-10">
+        <h2 class="animate-reveal text-5xl md:text-7xl text-pink-600 romantic-font mb-10">
+            Când?
+        </h2>
+
+        <div class="bg-white/80 backdrop-blur-md rounded-xl p-6 md:p-8 shadow-2xl animate-reveal" style="animation-delay: 1s;">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-8">
+                <div class="text-center border-2 border-pink-200 rounded-lg p-4 md:p-6 w-full">
+                    <p class="uppercase tracking-widest text-gray-500 text-xs md:text-sm font-bold mb-2">Plecare</p>
+                    <!-- EDIT HERE: Start Date -->
+                    <p class="text-2xl md:text-3xl font-bold text-gray-800">12 Nov</p>
+                    <p class="text-gray-600 text-sm md:text-base">Vineri Dimineața</p>
+                </div>
+
+                <div class="text-3xl text-pink-400 hidden md:block">➜</div>
+                <div class="text-3xl text-pink-400 md:hidden">⬇</div>
+
+                <div class="text-center border-2 border-pink-200 rounded-lg p-4 md:p-6 w-full">
+                    <p class="uppercase tracking-widest text-gray-500 text-xs md:text-sm font-bold mb-2">Întoarcere</p>
+                    <!-- EDIT HERE: End Date -->
+                    <p class="text-2xl md:text-3xl font-bold text-gray-800">15 Nov</p>
+                    <p class="text-gray-600 text-sm md:text-base">Luni Seara</p>
+                </div>
+            </div>
+
+            <div class="mt-8 text-gray-700 border-t border-gray-200 pt-6">
+                <p class="italic text-sm md:text-base">"Am rezolvat deja cu zilele libere de la muncă. Adu-ți doar pașaportul și zâmbetul!"</p>
+            </div>
+            
+            <div class="mt-8 text-sm text-gray-500">
+                (Așteaptă puțin...)
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- SECTION TRANSITION LOGIC ---
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const greetingNext = document.getElementById('greeting-next');
+            setTimeout(() => {
+                greetingNext.classList.remove('opacity-0');
+                greetingNext.classList.add('opacity-100');
+            }, 3000);
+        });
+
+        function goToLocation() {
+            const greetingSection = document.getElementById('greeting-section');
+            const locationSection = document.getElementById('location-section');
+            const tripText = document.getElementById('trip-text');
+            const whereText = document.getElementById('where-text');
+            const locationDetails = document.getElementById('location-details');
+
+            greetingSection.style.opacity = '0';
+            setTimeout(() => {
+                greetingSection.classList.add('hidden');
+                locationSection.classList.remove('hidden');
+                
+                tripText.classList.add('animate-reveal');
+                setTimeout(() => whereText.classList.add('animate-reveal'), 2000);
+                setTimeout(() => locationDetails.classList.add('animate-reveal'), 3500);
+            }, 500);
+        }
+
+        function goToDate() {
+            const locationSection = document.getElementById('location-section');
+            const dateSection = document.getElementById('date-section');
+
+            locationSection.classList.add('transition-opacity', 'duration-500', 'opacity-0');
+            setTimeout(() => {
+                locationSection.classList.add('hidden');
+                dateSection.classList.remove('hidden');
+
+                // TRIGGER FIREWORKS COUNTDOWN
+                setTimeout(startCelebration, 5000); 
+
+            }, 500);
+        }
+
+        // --- FIREWORKS ENGINE ---
+        
+        function startCelebration() {
+            const dateSection = document.getElementById('date-section');
+            const canvas = document.getElementById('celebration-canvas');
+            
+            dateSection.style.transition = "opacity 1s";
+            dateSection.style.opacity = "0";
+
+            setTimeout(() => {
+                dateSection.classList.add('hidden');
+                canvas.classList.add('show-canvas');
+                initFireworks();
+            }, 1000);
+        }
+
+        function initFireworks() {
+            const canvas = document.getElementById('celebration-canvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+
+            let particles = [];
+            let textPoints = [];
+            let rockets = [];
+
+            function calculateTextPoints() {
+                const offscreen = document.createElement('canvas');
+                const oCtx = offscreen.getContext('2d');
+                offscreen.width = window.innerWidth;
+                offscreen.height = window.innerHeight;
+                
+                // DYNAMIC FONT SIZING for Mobile
+                let fontSize = Math.min(window.innerWidth / 7, 150);
+                
+                if (fontSize < 40) fontSize = 40;
+
+                oCtx.font = `bold ${fontSize}px "Dancing Script"`;
+                oCtx.fillStyle = 'white';
+                oCtx.textAlign = 'center';
+                oCtx.textBaseline = 'middle';
+                
+                oCtx.fillText("La Mulți Ani!", offscreen.width/2, offscreen.height/2);
+                
+                const imageData = oCtx.getImageData(0, 0, offscreen.width, offscreen.height);
+                const data = imageData.data;
+                
+                textPoints = [];
+                const step = window.innerWidth < 768 ? 2 : 3; 
+                
+                for(let y = 0; y < offscreen.height; y += step) {
+                    for(let x = 0; x < offscreen.width; x += step) {
+                        const index = (y * offscreen.width + x) * 4;
+                        if(data[index+3] > 128) { 
+                            textPoints.push({x: x, y: y});
+                        }
+                    }
+                }
+
+                textPoints.sort((a, b) => a.x - b.x);
+            }
+
+            calculateTextPoints();
+
+            class Particle {
+                constructor(x, y, color, isTextParticle = false, targetX = 0, targetY = 0, vx = null, vy = null) {
+                    this.x = x;
+                    this.y = y;
+                    this.color = color;
+                    this.isTextParticle = isTextParticle;
+                    
+                    if (isTextParticle) {
+                        this.targetX = targetX;
+                        this.targetY = targetY;
+                        this.x = targetX + (Math.random() - 0.5) * 50; 
+                        this.y = canvas.height + Math.random() * 100; 
+                        
+                        this.vx = (this.targetX - this.x) / 40; 
+                        this.vy = (this.targetY - this.y) / 40;
+                        
+                        this.alpha = 1;
+                        this.size = Math.random() * 2 + 1.5; 
+                        this.frame = 0;
+                        this.settled = false;
+                    } else {
+                        // Explosion Particles
+                        if (vx !== null && vy !== null) {
+                            // Heart Shape Logic
+                            this.vx = vx;
+                            this.vy = vy;
+                        } else {
+                            // Random Fallback
+                            const angle = Math.random() * Math.PI * 2;
+                            const speed = Math.random() * 4 + 1;
+                            this.vx = Math.cos(angle) * speed;
+                            this.vy = Math.sin(angle) * speed;
+                        }
+                        
+                        this.alpha = 1;
+                        // Slightly slower decay for heart shapes to persist
+                        this.decay = Math.random() * 0.01 + 0.005;
+                        this.size = Math.random() * 3 + 1;
+                    }
+                }
+
+                update() {
+                    if (this.isTextParticle) {
+                        if (!this.settled) {
+                            this.x += this.vx;
+                            this.y += this.vy;
+                            this.frame++;
+                            if (this.frame >= 40) {
+                                this.x = this.targetX;
+                                this.y = this.targetY;
+                                this.settled = true;
+                            }
+                        }
+                        if (this.settled) {
+                            this.alpha = 0.8 + Math.sin(Date.now() * 0.01 + this.x) * 0.2;
+                        }
+                    } else {
+                        this.x += this.vx;
+                        this.y += this.vy;
+                        this.vy += 0.05; 
+                        this.alpha -= this.decay;
+                    }
+                }
+
+                draw(ctx) {
+                    ctx.save();
+                    ctx.globalAlpha = this.alpha;
+                    ctx.fillStyle = this.color;
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                    ctx.fill();
+                    ctx.restore();
+                }
+            }
+
+            class Rocket {
+                constructor() {
+                    this.x = Math.random() * canvas.width;
+                    this.y = canvas.height;
+                    this.color = `hsl(${Math.random() * 360}, 70%, 60%)`;
+                    this.targetY = Math.random() * (canvas.height / 2);
+                    this.speed = Math.random() * 5 + 8;
+                    this.exploded = false;
+                }
+
+                update() {
+                    this.y -= this.speed;
+                    if (this.y <= this.targetY) {
+                        this.exploded = true;
+                        this.explode();
+                    }
+                }
+
+                draw(ctx) {
+                    if (!this.exploded) {
+                        ctx.fillStyle = this.color;
+                        ctx.fillRect(this.x, this.y, 3, 10);
+                    }
+                }
+
+                explode() {
+                    // HEART SHAPE EXPLOSION
+                    const steps = 40; // Number of particles in the heart
+                    for (let i = 0; i < steps; i++) {
+                        const t = (Math.PI * 2 * i) / steps;
+                        
+                        // Speed factor (expands the heart)
+                        const r = 0.15 + Math.random() * 0.05; 
+                        
+                        // Heart parametric equations:
+                        // x = 16 sin^3(t)
+                        // y = 13 cos(t) - 5 cos(2t) - 2 cos(3t) - cos(4t)
+                        // Note: We invert Y because canvas Y is positive down.
+                        
+                        const vx = r * (16 * Math.pow(Math.sin(t), 3));
+                        const vy = -r * (13 * Math.cos(t) - 5 * Math.cos(2*t) - 2 * Math.cos(3*t) - Math.cos(4*t));
+
+                        particles.push(new Particle(this.x, this.y, this.color, false, 0, 0, vx, vy));
+                    }
+                }
+            }
+
+            let nextTextIndex = 0;
+            const startTime = Date.now();
+            let writingStarted = false;
+
+            function animate() {
+                // Use opaque black to clear canvas completely every frame (no trails)
+                ctx.fillStyle = 'black';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                const elapsed = Date.now() - startTime;
+
+                if (Math.random() < 0.05) {
+                    rockets.push(new Rocket());
+                }
+
+                if (elapsed > 1000) {
+                    writingStarted = true;
+                    
+                    const pointsPerFrame = 60;
+                    for(let i=0; i<pointsPerFrame; i++) {
+                        if (nextTextIndex < textPoints.length) {
+                            const pt = textPoints[nextTextIndex];
+                            const color = `hsl(${30 + Math.random() * 30}, 100%, 75%)`; 
+                            particles.push(new Particle(0, 0, color, true, pt.x, pt.y));
+                            nextTextIndex++;
+                        }
+                    }
+                }
+
+                rockets.forEach((r, i) => {
+                    r.update();
+                    r.draw(ctx);
+                    if (r.exploded) rockets.splice(i, 1);
+                });
+
+                particles.forEach((p, i) => {
+                    p.update();
+                    p.draw(ctx);
+                    if (!p.isTextParticle && p.alpha <= 0) {
+                        particles.splice(i, 1);
+                    }
+                });
+
+                requestAnimationFrame(animate);
+            }
+
+            animate();
+            
+            window.addEventListener('resize', () => {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+                calculateTextPoints();
+            });
+        }
+    </script>
+
+</body>
+</html>
