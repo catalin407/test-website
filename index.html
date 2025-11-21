@@ -154,6 +154,16 @@
             justify-content: center;
             color: #aaa;
             font-size: 0.9rem;
+            overflow: hidden;
+        }
+
+        .photo-placeholder img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            border-radius: 6px;
+            border: none;
         }
 
         .date-list {
@@ -284,7 +294,7 @@
                 </div>
                 <div class="face back">
                     <!-- Back of Page 1 (Left side of spread 1) -->
-                    <p>M-am gândit că merităm o pauză...</p>
+                    <p>De ziua ta mergem undeva...</p>
                 </div>
             </div>
 
@@ -293,10 +303,9 @@
                 <div class="face front">
                     <h2>Mergem la...</h2>
                     <div class="photo-placeholder">
-                        <i data-lucide="mountain-snow" size="32" style="margin-right:10px;"></i>
-                        Fotografie Destinație
+                        <img src="images/image.jpg" alt="Fotografie Destinație" class="destination-photo" loading="lazy">
                     </div>
-                    <p class="animate-text">O evadare romantică, doar noi doi.</p>
+                    <p class="animate-text">Doar noi doi.</p>
                 </div>
                 <div class="face back">
                     <p>Am pregătit totul.</p>
@@ -308,9 +317,9 @@
                 <div class="face front">
                     <h2>Notează Datele!</h2>
                     <ul class="date-list">
-                        <li><i data-lucide="calendar" size="20"></i> <span>14 Februarie</span></li>
+                        <li><i data-lucide="calendar" size="20"></i> <span>9 Decembrie</span></li>
                         <li><i data-lucide="clock" size="20"></i> <span>3 Zile & 2 Nopți</span></li>
-                        <li><i data-lucide="map-pin" size="20"></i> <span>Locația noastră secretă</span></li>
+                        <li><i data-lucide="map-pin" size="20"></i> <span>La munte</span></li>
                     </ul>
                     <p class="animate-text" style="margin-top: 20px;">Eliberează-ți programul.</p>
                 </div>
